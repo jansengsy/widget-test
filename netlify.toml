@@ -5,23 +5,23 @@
 # Handle widget routes
 [[redirects]]
   from = "/counter"
-  to = "/counter/index.html"
+  to = "/src/widgets/counter/index.html"
   status = 200
 
 [[redirects]]
   from = "/message"
-  to = "/message/index.html"
+  to = "/src/widgets/message/index.html"
   status = 200
 
 # Handle direct access to widget paths
 [[redirects]]
   from = "/counter/*"
-  to = "/counter/index.html"
+  to = "/src/widgets/counter/index.html"
   status = 200
 
 [[redirects]]
   from = "/message/*"
-  to = "/message/index.html"
+  to = "/src/widgets/message/index.html"
   status = 200
 
 # Fallback redirect for SPA
