@@ -11,7 +11,7 @@ interface CounterState {
   history: HistoryEntry[];
 }
 
-interface MessageEvent {
+interface CounterMessage {
   type: "SET_COUNT" | "RESET";
   payload?: number;
 }
@@ -24,10 +24,11 @@ const CounterWidget: React.FC = () => {
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      switch (event.type) {
+      const data = event.data as CounterMessage;
+      switch (data.type) {
         case "SET_COUNT":
-          if (event.payload !== undefined) {
-            updateCount(event.payload);
+          if (data.payload !== undefined) {
+            updateCount(data.payload);
           }
           break;
         case "RESET":
