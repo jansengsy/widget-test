@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/index.css" />
+    <title>Message Widget Test</title>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #widget-root {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="w-full h-full flex flex-col gap-4 items-center justify-center p-8"
+    >
+      <h1 class="text-2xl font-bold mb-8">Message Widget Test</h1>
+
+      <!-- Messages will be displayed here -->
+      <div
+        id="messages"
+        class="mb-8 p-4 bg-gray-50 rounded-lg w-[800px] min-h-[400px] max-h-[400px] border border-red-500 overflow-y-auto"
+      >
+        <p id="placeholder" class="text-gray-500">
+          Messages will appear here...
+        </p>
+      </div>
+
+      <!-- Widget iframe -->
+      <iframe
+        src="http://localhost:5173/src/widgets/message/index.html"
+        title="Message Widget"
+        width="800"
+        height="800"
+      ></iframe>
+    </div>
+
+    <script>
+      const messagesContainer = document.getElementById("messages");
+      const placeholder = document.getElementById("placeholder");
+
+      // Listen for messages from the widgets
+      window.addEventListener("message", function (event) {
+        console.log("Widget message:", event.data);
+
+        // Handle message widget events
+        if (event.data.type === "NEW_MESSAGE") {
+          // Remove placeholder if it exists
+          if (placeholder) {
+            placeholder.remove();
+          }
+
+          const message = event.data.payload;
+
+          // Create message element
+          const messageEl = document.createElement("div");
+          messageEl.className =
+            "mb-4 p-4 bg-gray-50 rounded-lg overflow-y-auto";
+          messageEl.innerHTML = `
+            <p class="text-lg">${message.text}</p>
+            <p class="text-sm text-gray-500">${new Date(
+              message.timestamp
+            ).toLocaleTimeString()}</p>
+          `;
+
+          // Add new message
+          messagesContainer.appendChild(messageEl);
+
+          // Scroll to bottom
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/index.css" />
+    <title>All Widgets Test</title>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #widget-root {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="w-full h-full p-8">
+      <h1 class="text-2xl font-bold mb-8">Widget Dashboard</h1>
+
+      <div class="flex h-[90%] gap-8">
+        <!-- Counter Widget Section -->
+        <div class="bg-gray-50 p-6 rounded-lg w-1/2 h-full">
+          <!-- Added w-1/2 -->
+          <h2 class="text-xl font-semibold mb-4">Counter Widget</h2>
+          <iframe
+            src="http://localhost:5173/src/widgets/counter/index.html"
+            title="Counter Widget"
+            width="1100"
+            height="600"
+          ></iframe>
+        </div>
+
+        <!-- Message Widget Section -->
+        <div class="bg-gray-50 p-6 rounded-lg w-1/2 h-full">
+          <!-- Added w-1/2 -->
+          <h2 class="text-xl font-semibold mb-4">Message Widget</h2>
+          <!-- Messages Display -->
+          <div
+            id="messages"
+            class="mb-4 p-4 bg-white rounded-lg min-h-[200px] max-h-[200px] overflow-y-auto"
+          >
+            <p class="text-gray-500">Messages will appear here...</p>
+          </div>
+          <!-- Widget -->
+          <iframe
+            src="http://localhost:5173/src/widgets/message/index.html"
+            title="Message Widget"
+            width="800"
+            height="600"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const messagesContainer = document.getElementById("messages");
+
+      // Listen for messages from the widgets
+      window.addEventListener("message", function (event) {
+        console.log("Widget message:", event.data);
+
+        // Handle message widget events
+        if (event.data.type === "NEW_MESSAGE") {
+          const message = event.data.payload;
+
+          // Create message element
+          const messageEl = document.createElement("div");
+          messageEl.className = "mb-4 p-4 bg-gray-50 rounded-lg";
+          messageEl.innerHTML = `
+            <p class="text-lg">${message.text}</p>
+            <p class="text-sm text-gray-500">${new Date(
+              message.timestamp
+            ).toLocaleTimeString()}</p>
+          `;
+
+          // Clear placeholder if it exists
+          if (messagesContainer.querySelector(".text-gray-500")) {
+            messagesContainer.innerHTML = "";
+          }
+
+          // Add new message
+          messagesContainer.appendChild(messageEl);
+
+          // Scroll to bottom
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+      });
+    </script>
+  </body>
+</html>

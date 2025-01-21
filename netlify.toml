@@ -1,0 +1,19 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/counter/*"
+  to = "/counter/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/message/*"
+  to = "/message/index.html"
+  status = 200
+
+# Fallback redirect for SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
