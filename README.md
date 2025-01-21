@@ -18,5 +18,3 @@ pnpm dev
 Each widget has an example html page available at `localhost:5173/examples/<widget_name>`
 
 For example: `localhost:5173/examples/counter`
-
-
